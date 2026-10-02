@@ -153,7 +153,7 @@ export const EventDetailsPage: React.FC = () => {
 
     const spotsLeft = event.capacity - event.currentRegistrations;
     const isFull = spotsLeft <= 0;
-    const isEventOwner = user && event.createdBy && (user._id === event.createdBy._id || user._id === event.createdBy);
+    const isEventOwner = user && event.createdBy && user._id === event.createdBy._id;
 
     return (
         <div className="min-h-screen bg-cream-canvas">

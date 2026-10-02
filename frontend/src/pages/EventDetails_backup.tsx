@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { useAuth } from '../contexts/AuthContext';
 import { eventsApi, registrationsApi } from '../services/api';
@@ -8,15 +8,14 @@ import type { Event } from '../types/api';
 export const EventDetailsPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { isAuthenticated, user } = useAuth();
+    const { isAuthenticated } = useAuth();
 
     const [event, setEvent] = useState<Event | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [registering, setRegistering] = useState(false);
     const [isRegistered, setIsRegistered] = useState(false);
-    const [eventRegistrations, setEventRegistrations] = useState<any[]>([]);
-    const [showRegistrations, setShowRegistrations] = useState(false);
+
 
     useEffect(() => {
         if (id) {
@@ -50,30 +49,9 @@ export const EventDetailsPage: React.FC = () => {
         }
     };
 
-    const fetchEventRegistrations = async () => {
-        try {
-            if (!id) return;
-            const data = await registrationsApi.getEventRegistrations(id);
-            setEventRegistrations(data.registrations || []);
-            setShowRegistrations(true);
-        } catch (err: any) {
-            alert(err.response?.data?.message || 'Failed to load registrations');
-        }
-    };
 
-    const handleDeleteEvent = async () => {
-        if (!confirm('Are you sure you want to delete this event? This action cannot be undone.')) {
-            return;
-        }
 
-        try {
-            if (!id) return;
-            await eventsApi.delete(id);
-            navigate('/events', { replace: true });
-        } catch (err: any) {
-            alert(err.response?.data?.message || 'Failed to delete event');
-        }
-    };
+
 
     const handleRegister = async () => {
         if (!isAuthenticated) {
