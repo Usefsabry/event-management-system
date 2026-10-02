@@ -13,8 +13,21 @@ connectDB();
 
 const app = express();
 
-// Middleware
-app.use(cors());
+// ==========================================
+//CORS 
+// ==========================================
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  credentials: true
+}));
+
+app.options('*', cors());
+
+// ==========================================
+// 2. Middleware
+// ==========================================
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
