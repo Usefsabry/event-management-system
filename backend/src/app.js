@@ -10,22 +10,28 @@ connectDB();
 const app = express();
 
 // ==========================================
-// إعدادات CORS المحدثة والمتوافقة مع Express الحديثة
+// إعداد CORS المباشر والمضمون لـ Vercel
 // ==========================================
-app.use(cors({
-  origin: '*', 
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  credentials: true
-}));
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  res.header('Access-Control-Allow-Headers', '*'); // السماح بجميع الرؤوس الممررة
+  
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  
+  next();
+});
 
-// تم حذف سطر app.options(...) لتجنب أخطاء path-to-regexp
+app.use(cors());
+
 // ==========================================
-
+// Middlewares & Routes
+// ==========================================
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
 app.get('/api/health', (req, res) => {
   res.json({
     success: true,
