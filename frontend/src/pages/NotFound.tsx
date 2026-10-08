@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 
+// not found page 
+
 export const NotFoundPage: React.FC = () => {
     return (
         <div className="min-h-screen bg-cream-canvas flex items-center justify-center">
