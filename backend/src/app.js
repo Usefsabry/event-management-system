@@ -5,17 +5,23 @@ require('dotenv').config();
 const connectDB = require('./config/db');
 const errorMiddleware = require('./middleware/error.middleware');
 
-connectDB();
-
 const app = express();
 
+// ضمان الاتصال بقاعدة البيانات قبل التعامل مع الطلب
+app.use(async (req, res, next) => {
+  await connectDB();
+  next();
+});
+
 // ==========================================
-// إعداد CORS المباشر والمضمون لـ Vercel
+// إعدادات CORS
 // ==========================================
+app.use(cors());
+
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-  res.header('Access-Control-Allow-Headers', '*'); // السماح بجميع الرؤوس الممررة
+  res.header('Access-Control-Allow-Headers', '*');
   
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
@@ -23,8 +29,6 @@ app.use((req, res, next) => {
   
   next();
 });
-
-app.use(cors());
 
 // ==========================================
 // Middlewares & Routes
