@@ -2,7 +2,7 @@ import axios, { type AxiosResponse } from 'axios';
 import type { ApiResponse, AuthResponse, LoginRequest, RegisterRequest, User, Category, CreateCategoryRequest, CategoriesResponse, Event, CreateEventRequest, UpdateEventRequest, EventsResponse, EventFilters, Registration, CreateRegistrationRequest, CancelRegistrationRequest, RegistrationStatus, RegistrationsResponse, EventRegistrationsResponse } from '../types/api';
 
 // Base API configuration
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://event-management-system-p8cd.vercel.app/api';
 
 const api = axios.create({
     baseURL: API_BASE_URL,
